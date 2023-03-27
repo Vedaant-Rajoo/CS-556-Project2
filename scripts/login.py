@@ -19,12 +19,9 @@ def login(username,password):
     query = "SELECT password FROM user_info WHERE username = %s"
     cursor.execute(query, (username,))
     result = cursor.fetchone()
-
+    cursor.close()
+    conn.close()
     if result is not None and result[0] == password:
         return True
     else:
         return False
-    
-    # Close the connection
-    cursor.close()
-    conn.close()

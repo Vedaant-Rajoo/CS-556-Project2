@@ -1,0 +1,8 @@
+QMainWindow {
+    background-color: #282828;
+}
+QLabel {
+    color: #fbf1c7;
+    font-size: 21px;
+    font-weight: bold;
+}

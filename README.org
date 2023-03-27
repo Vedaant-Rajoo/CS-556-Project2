@@ -9,7 +9,7 @@
 
 ** Objectives
    - [ ] Administrative Delegation
-   - [ ] Admis Transfer
+   - [ ] Administrative Transfer
    - [ ] Recursive Revoke
    - [ ] Grantor Transfer
    - [ ] With acceptance
@@ -20,3 +20,10 @@
    - [ ] Figure out the implementation of the UI
    - [ ] Backend Development
    - [ ] Figure out the realtional connections.
+
+** Report Worthy
+
+Using networkx library to create and manage graphs for admistritrative and Authorization.
+Using pythonQT6 to create a UI for the database.
+Using GRANT and REVOKE from SQL to manage permisssions.
+Tables -> user_info, PAB, obj_info.

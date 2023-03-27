@@ -24,3 +24,16 @@ cursor = conn.cursor()
 
 
 
+# Function to check if the user is a DBA (Database Administrator)
+def isDBA(username):
+    if username in DBA:
+        return True
+    else:
+        return False
+    
+# Close the connection
+cursor.close()
+conn.close()
+
+
+

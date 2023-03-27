@@ -1,5 +1,4 @@
-
-QWidget {
+QMainWindow {
     background-color: #282828;
 }
 QLabel {
