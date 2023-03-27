@@ -1,5 +1,8 @@
 import mysql.connector
 from datetime import datetime, timedelta, date
+
+# The list that contains the names of the DBA's
+DBA = ['ava','emma','liam','noah']
 HOST='localhost'
 USERNAME='root'
 PASSWORD='password'
@@ -14,7 +17,6 @@ config = {
     'raise_on_warnings': True,
     
 }
-names = ['jacob', 'olivia', 'noah', 'emma', 'liam', 'ava', 'william', 'sophia', 'michael', 'isabella', 'james', 'mia', 'benjamin', 'charlotte', 'elijah', 'amelia', 'lucas', 'harper', 'mason', 'evelyn']
 
 conn = mysql.connector.connect(**config)
 cursor = conn.cursor()

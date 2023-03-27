@@ -7,10 +7,16 @@
 ** Project Team
    - Vedaant Rajoo (vrajoo@purdue.edu)
 
+** Objectives
+   - [ ] Administrative Delegation
+   - [ ] Admis Transfer
+   - [ ] Recursive Revoke
+   - [ ] Grantor Transfer
+   - [ ] With acceptance
+   - [ ] w/o acceptance
 
 ** Tasks
    - [X] Create a basic schema and implement the database into Python
-   - [ ] Create algorithms for recursive revoke
    - [ ] Figure out the implementation of the UI
    - [ ] Backend Development
    - [ ] Figure out the realtional connections.
