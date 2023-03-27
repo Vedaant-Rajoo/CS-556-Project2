@@ -1,0 +1,22 @@
+* Project Name
+
+** Overview
+   This project is focused on developing a new mobile application.
+
+** Project Team
+   - John Doe (Project Manager)
+   - Jane Smith (Developer)
+   - Alex Johnson (Designer)
+
+** Milestones
+   - Milestone 1: User Research (due date: 5/1/2023)
+   - Milestone 2: Wireframes (due date: 6/1/2023)
+   - Milestone 3: MVP (due date: 7/1/2023)
+   - Milestone 4: Testing and Deployment (due date: 8/1/2023)
+
+** Tasks
+   - [ ] Conduct user interviews (assigned to John Doe)
+   - [ ] Develop wireframes (assigned to Alex Johnson)
+   - [ ] Develop MVP (assigned to Jane Smith)
+   - [ ] Conduct testing (assigned to Jane Smith)
+   - [ ] Deploy to app store (assigned to John Doe)
