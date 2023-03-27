@@ -1,22 +1,16 @@
-* Project Name
+* CS556-Project 2
 
 ** Overview
-   This project is focused on developing a new mobile application.
+   This project is focused on creating a UI and a tool that supports the instructor's model of 
+   Multiparty Authorization System for relational databases.
 
 ** Project Team
-   - John Doe (Project Manager)
-   - Jane Smith (Developer)
-   - Alex Johnson (Designer)
+   - Vedaant Rajoo (vrajoo@purdue.edu)
 
-** Milestones
-   - Milestone 1: User Research (due date: 5/1/2023)
-   - Milestone 2: Wireframes (due date: 6/1/2023)
-   - Milestone 3: MVP (due date: 7/1/2023)
-   - Milestone 4: Testing and Deployment (due date: 8/1/2023)
 
 ** Tasks
-   - [ ] Conduct user interviews (assigned to John Doe)
-   - [ ] Develop wireframes (assigned to Alex Johnson)
-   - [ ] Develop MVP (assigned to Jane Smith)
-   - [ ] Conduct testing (assigned to Jane Smith)
-   - [ ] Deploy to app store (assigned to John Doe)
+   - [X] Create a basic schema and implement the database into Python
+   - [ ] Create algorithms for recursive revoke
+   - [ ] Figure out the implementation of the UI
+   - [ ] Backend Development
+   - [ ] Figure out the realtional connections.
