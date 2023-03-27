@@ -1,5 +1,5 @@
 import mysql.connector
-from datetime import datetime, timedelta, date
+from datetime import datetime
 
 # The list that contains the names of the DBA's
 DBA = ['ava','emma','liam','noah']
@@ -17,23 +17,35 @@ config = {
     'raise_on_warnings': True,
     
 }
-
 conn = mysql.connector.connect(**config)
 cursor = conn.cursor()
-
-
-
-
 # Function to check if the user is a DBA (Database Administrator)
 def isDBA(username):
     if username in DBA:
         return True
     else:
         return False
-    
-# Close the connection
-cursor.close()
-conn.close()
+
+def getPolicies():
+    query = ("SELECT * FROM PAB")
+    cursor.execute(query)
+    results =  cursor.fetchall() 
+    return results
+ 
+def getObjectsAdmin(username):
+    query = ("SELECT obj FROM obj_info WHERE own_cur = %s")
+    cursor.execute(query,(username,))
+    results =  cursor.fetchall() 
+    return results
+
+def isowner(username):
+    query = ("SELECT * FROM obj_info WHERE own_cur = %s")
+    cursor.execute(query,(username,))
+    results =  cursor.fetchone() 
+    if results:
+        return True
+    else:
+        return False
 
 
 

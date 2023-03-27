@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
-from components.HomePage import HomePage
 from scripts.login import login
 
 def load_stylesheet():
@@ -10,10 +9,13 @@ def load_stylesheet():
 
 class LoginPage(QWidget):
     login_success = pyqtSignal(str)
-    def __init__(self):
+    def __init__(self,window):
         super().__init__()
-        
-
+        self.window = window
+        self.window.setWindowTitle("Login")
+        self.window.setFixedSize(500, 500)
+        self.window.setCentralWidget(self)
+        self.setStyleSheet(load_stylesheet())
         # create the widgets
         self.username_label = QLabel("Username:", self)
         self.username_label.move(50, 50)
