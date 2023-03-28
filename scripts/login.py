@@ -1,19 +1,14 @@
 import mysql.connector
 
-HOST='localhost'
-USERNAME='root'
-PASSWORD='password'
-DATABASE='cs556'
+HOST = 'localhost'
+USERNAME = 'root'
+PASSWORD = 'password'
+DATABASE = 'cs556'
 # MySQL connection
-config = {
-    'user': USERNAME,
-    'password': PASSWORD,
-    'host': HOST,
-    'database': DATABASE,
-    'raise_on_warnings': True,
-}
+config = dict(user=USERNAME, password=PASSWORD, host=HOST, database=DATABASE, raise_on_warnings=True)
 
-def login(username,password):
+
+def login(username, password):
     conn = mysql.connector.connect(**config)
     cursor = conn.cursor()
     query = "SELECT password FROM user_info WHERE username = %s"

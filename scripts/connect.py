@@ -2,7 +2,7 @@ import mysql.connector
 from datetime import datetime
 
 # The list that contains the names of the DBA's
-DBA = ['ava','emma','liam','noah']
+DBA = ['ava','emma','liam','noah','mia']
 HOST='localhost'
 USERNAME='root'
 PASSWORD='password'
@@ -18,7 +18,7 @@ config = {
     
 }
 conn = mysql.connector.connect(**config)
-cursor = conn.cursor()
+cursor = conn.cursor(buffered=True)
 # Function to check if the user is a DBA (Database Administrator)
 def isDBA(username):
     if username in DBA:
@@ -32,7 +32,7 @@ def getPolicies():
     results =  cursor.fetchall() 
     return results
  
-def getObjectsAdmin(username):
+def getObjectsAdmined(username):
     query = ("SELECT obj FROM obj_info WHERE own_cur = %s")
     cursor.execute(query,(username,))
     results =  cursor.fetchall() 
@@ -46,6 +46,5 @@ def isowner(username):
         return True
     else:
         return False
-
 
 

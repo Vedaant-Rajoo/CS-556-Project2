@@ -14,6 +14,7 @@
    - [ ] Grantor Transfer
    - [ ] With acceptance
    - [ ] w/o acceptance
+   - [ ] Change the GUI system
 
 ** Tasks
    - [X] Create a basic schema and implement the database into Python
@@ -25,5 +26,6 @@
 
 Using networkx library to create and manage graphs for admistritrative and Authorization.
 Using pythonQT6 to create a UI for the database.
+Changing the GUI Interface to TKInter.
 Using GRANT and REVOKE from SQL to manage permisssions.
 Tables -> user_info, PAB, obj_info.
