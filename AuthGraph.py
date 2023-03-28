@@ -1,12 +1,23 @@
-import datetime as dt
 import networkx as nx
+import random
 
 def getNow():
-    """
-    Gets the current time in seconds since epoch (1st Jan 1970)
-    Returns: int
-    """
-    return int(dt.datetime.now().timestamp())
+    try:
+        f = open('highest.txt','r')
+        i = int(f.read().strip())
+    except FileNotFoundError:
+        open('highest.txt','w')
+        i = random.randint(0,10)
+
+    increment = random.randrange(1, 10)
+    i += increment
+
+    with open('highest.txt', 'w') as f:
+        f.write(str(i))
+
+    return i
+
+    
 
 def rec_revoke(g, admin, user):
     """
@@ -52,18 +63,21 @@ class AuthGraph(nx.DiGraph):
         self.add_node(user,role=role)
     
     def delegate(self, grantor, grantee):
+        if self.has_edge(grantor,grantee):
+            raise AuthGraphError("Already delegated")
         if grantor not in self.nodes:
             raise AuthGraphError("Grantor not in Database")
         elif grantee not in self.nodes:
             self.add_user(grantee,role='admin')
-        elif (self.nodes[grantor]['role'] not in ['owner','admin']):
+        elif (self.nodes[grantor]['role'] not in ['owner','admin']) or (self.nodes[grantee]['role'] == 'owner') or self.has_edge(grantee,grantor):
             raise AuthGraphError("You are not authorized to delegate")
         self.add_edge(grantor,grantee,weight=getNow())
+        self.nodes[grantee]['role'] = 'admin'
     
     def revoke(self, admin, user):
-        if admin or user not in self.nodes:
+        if (admin or user) not in self.nodes:
             raise AuthGraphError("User not in Database")
-        elif (self.nodes[admin]['role'] not in ['owner','admin']):
+        elif self.nodes[admin]['role'] not in ['owner','admin']:
             raise AuthGraphError("You are not authorized to revoke")
         self.remove_edge(admin,user)
         self.nodes[user]['role'] = None
@@ -106,4 +120,4 @@ class AuthGraph(nx.DiGraph):
         if incoming_edges:
             self.remove_edges_from(incoming_edges)
         self.remove_node(grantor)
-        self.add_node(grantor,role='shadow')   
+        self.add_node(grantor,role='shadow')
