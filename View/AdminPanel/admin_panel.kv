@@ -9,7 +9,7 @@
             id: admin_box
             orientation: 'vertical'
             padding: "10dp"
-            spacing: "10dp"
+            spacing: "5dp"
             pos_hint: {"center_y": 0.5}
             MDLabel:
                 text: "Command Help: "
@@ -17,10 +17,25 @@
                 font_style: "H4"
                 theme_text_color: "Secondary"
             MDLabel:
-                text: "1. To grant privileges, \n type: grant <username>,<privilege> \n eg: grant user1,select,insert \n eg: grant user2,all"
+                text: "1. To grant privileges, grant <username>,<privilege> \n eg: grant user1,select,insert \n eg: grant user2,all"
                 halign: "left"
-                font_style: "H6"
-                text_color: (0,0,0,1)
+                font_style: "Body1"
+                theme_text_color: "Secondary"
+            MDLabel:
+                text: "2. To revoke privileges, revoke <username>,<privilege> \n eg: revoke user1,select,insert \n eg: revoke user2,all"
+                halign: "left"
+                font_style: "Body1"
+                theme_text_color: "Secondary"
+            MDLabel:
+                text: "3. To delegate a user, delegate <username> \n eg: delegate user1"
+                halign: "left"
+                font_style: "Body1"
+                theme_text_color: "Secondary"
+            MDLabel:
+                text: "4. To tranfer your privileges to a user, transfer <username> \n eg: transfer user1"
+                halign: "left"
+                font_style: "Body1"
+                theme_text_color: "Secondary"
             MDTextField:
                 id: com
                 mode: "round"

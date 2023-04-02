@@ -34,11 +34,17 @@ def isDBA(username):
         return False
 
 
-def getPolicies():
-    query = "SELECT * FROM PAB"
-    cursor.execute(query)
-    results = cursor.fetchall()
-    return results
+def getPolicies(obj=None):
+    if obj is None:
+        query = "SELECT * FROM PAB"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        return results
+    else:
+        query = "SELECT * FROM PAB WHERE object = %s"
+        cursor.execute(query, (obj,))
+        result = cursor.fetchone()
+        return result
 
 
 def getObjectsAdmined(username):

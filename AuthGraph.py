@@ -70,17 +70,24 @@ class AuthGraph(nx.DiGraph):
         Returns: None
         """
         data = json.loads(graph)
+        g_atr = data["graph"]
         data = nx.node_link_graph(data)
         self.clear()
         self.add_nodes_from(data.nodes(data=True))
         self.add_edges_from(data.edges(data=True))
+        self.graph = g_atr
 
     def save_graph(self):
         """
         Saves the graph to a json string
         Returns: str
         """
-        return json.dumps(nx.node_link_data(self))
+        if self.graph is not None:
+            data = nx.node_link_data(self)
+            data["graph"] = self.graph
+            return json.dumps(data)
+        else:
+            raise AuthGraphError("Cant load attrributes")
 
     def add_user(self, user, role=None):
         self.add_node(user, role=role)

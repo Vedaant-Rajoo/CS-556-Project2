@@ -50,6 +50,17 @@ class AdminPanel(MDScreen):
             else:
                 self.ids.com.helper_text = 'Invalid Privilege'
                 self.ids.com.text = ''
+        elif words[0] == 'delegate':
+            user = words[1]
+            addLog(command, app.state['username'])
+            self.ids.com.helper_text = 'Delegation successful'
+            self.ids.com.text = ''
+        elif words[0] == 'transfer':
+            user = words[1]
+            addLog(command, app.state['username'])
+            self.ids.com.helper_text = 'Transfer successful'
+            self.ids.com.text = ''
+
         else:
             self.ids.com.helper_text = 'Invalid Command'
             self.ids.com.text = ''

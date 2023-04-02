@@ -33,12 +33,13 @@ class MainApp(MDApp):
         if self.sm is None:
             self.state = {'current': 'login',
                           'username': '',
+                          'obj': None
                           }
         else:
             self.state = {
                 'current': self.sm.current,
                 'username': '',
-
+                'obj': None
             }
 
         self.sm = ScreenManager()
