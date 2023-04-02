@@ -1,0 +1,21 @@
+<HomeScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDBoxLayout:
+            size_hint_y: None
+            height: "56dp"
+            MDTopAppBar:
+                id: home_appbar
+                md_bg_color: app.theme_cls.primary_color
+                left_action_items:[["account", lambda x: x]]
+                right_action_items:[["logout", lambda x: root.logout(), "Logout"]]
+                anchor_title: "left"
+
+        MDBoxLayout:
+            padding: "50dp"
+            orientation: "vertical"
+            MDLabel:
+                id: home_label
+                halign: "center"
+            

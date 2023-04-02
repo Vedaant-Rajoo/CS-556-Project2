@@ -7,6 +7,23 @@ Config.set('graphics', 'minimum_height', '400')
 
 from kivymd.tools.hotreload.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
+from kivymd.theming import ThemeManager
+from kivymd.color_definitions import colors
+
+
+class GruvboxTheme(ThemeManager):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.theme_style = 'Dark'
+        self.primary_palette = 'Teal'
+        self.gruvbox_dark = (
+            colors["gruvbox-dark"][x]
+            for x in (
+            "bg0", "bg1", "bg2", "bg3", "bg4",
+            "red", "green", "yellow",
+            "blue", "purple", "aqua", "gray"
+        )
+        )
 
 
 class ScreenManager(MDScreenManager):
@@ -14,50 +31,22 @@ class ScreenManager(MDScreenManager):
         return {screen.__class__.__name__: screen.__class__.__module__ for screen in self.screens}
 
 
-# class LoginScreen(MDScreen):
-#     username = ObjectProperty(None)
-# 
-#     @staticmethod
-#     def login(self, username, password):
-#         if login(username, password):
-#             self.manager.current = 'home'
-#             self.manager.transition.direction = 'left'
-#         else:
-#             self.ids.password.error = True
-#             self.ids.username.text = ''
-#             self.ids.password.text = ''
-#             self.ids.username.focus = True
-# 
-#     def on_pre_leave(self, *args):
-#         self.ids.username.focus = True
-#         global g_username
-#         g_username = self.ids.username.text
-# 
-
-# class HomeScreen(MDScreen):
-# 
-#     def on_enter(self, *args):
-#         self.ids.home_label.text = f'Welcome {g_username}'
-#         print(self.manager.current)
-# 
-#     def logout(self):
-#         self.manager.current = 'login'
-#         self.manager.transition.direction = 'right'
-
 class MainApp(MDApp):
     DEBUG = True
     sm = None
     state = {}
 
     def build_app(self, first=False):
-        self.theme_cls.theme_style = "Dark"
-        self.theme_cls.primary_palette = "Orange"
+        self.theme_cls = GruvboxTheme()
+        self.title = 'CS556 Project'
         if self.sm is None:
-            self.state = {'current': 'login'
+            self.state = {'current': 'login',
+                          'username': ''
                           }
         else:
             self.state = {
                 'current': self.sm.current,
+                'username': ''
             }
         KV_FILES = []
         self.sm = ScreenManager()

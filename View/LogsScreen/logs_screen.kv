@@ -1,0 +1,18 @@
+#+import MDScrollView kivymd.uix.scrollview
+#: import Widget kivy.uix.widget.Widget
+<LogsScreen>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: 'Logs'
+            right_action_items: [["home",lambda x: root.gohome()],["logout", lambda x: root.logout(), "Logout"]]
+            elevation: 10
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: "8dp"
+            spacing: "8dp"
+            MDScrollView:
+                bar_width: "8dp"
+                bar_margin: "8dp"
+                LogsTable:
+                    id: logs_table

@@ -1,0 +1,29 @@
+<LoginScreen>:
+    MDBoxLayout:
+        padding: "50dp"
+        orientation: "vertical"
+        spacing: "20dp"
+        MDLabel:
+            text: "Login Screen"
+            halign: "center"
+            size_hint: 1, 0.5
+            font_style: "H2"
+        MDTextField:
+            id: username
+            mode: "rectangle"
+            hint_text: "Username"
+            max_text_length: 10
+
+        MDTextField:
+            id: password
+            mode: "rectangle"
+            hint_text: "Password"
+            password: True
+            helper_text: "Incorrect username or password"
+            helper_text_mode: "on_error"
+            max_text_length: 10
+        MDRectangleFlatButton:
+            text: "Login"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: root.login(username.text, password.text)
+            

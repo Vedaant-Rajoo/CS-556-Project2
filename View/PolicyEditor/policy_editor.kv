@@ -1,0 +1,83 @@
+#+import MDScrollView kivymd.uix.scrollview
+#: import Widget kivy.uix.widget.Widget
+<PolicyEditor>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            title: "Policy Editor"
+            right_action_items: [["home",lambda x: root.gohome()],["logout", lambda x: root.logout(), "Logout"]]
+            elevation: 10
+        MDBoxLayout:
+        # Main Layout
+            orientation: 'vertical'
+            padding: "8dp"
+            spacing: "8dp"
+            MDScrollView:
+                bar_width: "8dp"
+                bar_margin: "8dp"
+                TableScreen:
+                    id: table_screen
+                    
+            MDGridLayout:
+                cols: 3
+                size_hint_y: 0.8
+                padding: "10dp"
+                spacing: "10dp"
+                MDTextField:
+                    id: object_name
+                    hint_text: "Object Name"
+                    helper_text: "Please fill all fields"
+                    helper_text_mode: "on_error"
+                    mode: "fill"
+                    on_focus: if self.focus: root.obj_menu.open()
+                MDTextField:
+                    id: policy_type
+                    hint_text: "Policy Type"
+                    mode: "fill"
+                    on_focus: if self.focus: root.pt_menu.open()
+                Widget:
+                MDTextField:
+                    id: delegation
+                    hint_text: "Delegation Options"
+                    mode: "fill"
+                    on_focus: if self.focus: root.dlg_menu.open()
+                MDTextField:
+                    id: transfer
+                    hint_text: "Transfer Options"
+                    mode: "fill"
+                    on_focus: if self.focus: root.trn_menu.open()
+                Widget:
+                MDTextField:
+                    id: acceptance
+                    hint_text: "Acceptance Options"
+                    mode: "fill"
+                    on_focus: if self.focus: root.acpt_menu.open()
+                MDTextField:
+                    id: revocation
+                    hint_text: "Revocation Options"
+                    mode: "fill"
+                    on_focus: if self.focus: root.rvk_menu.open()
+                MDFillRoundFlatIconButton:
+                    icon: "plus"
+                    text: "Add Policy"
+                    size_hint_y: 1
+                    size_hint_x: 1
+                    valign: "center"
+                    pos_hint: {"center_y": 0.5}
+                    on_release: root.add_policy()
+                    
+                
+
+
+
+            
+                            
+            
+
+        
+            
+    
+    
+         
+            
+       

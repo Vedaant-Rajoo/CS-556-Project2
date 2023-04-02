@@ -16,11 +16,17 @@
    - [ ] w/o acceptance
    - [ ] Change the GUI system
 
-** Tasks
+** TODO
    - [X] Create a basic schema and implement the database into Python
-   - [ ] Figure out the implementation of the UI
-   - [ ] Backend Development
-   - [ ] Figure out the realtional connections.
+   - [X] Figure out the implementation of the UI
+   - [X] Add DBA users to admin privilege.
+   - [X] Backend Development
+   - [X] Figure out the realtional connections.
+   - [] Add AuthLogin graph class to main app
+   - [] Package App
+   - [X] Logs Screen
+   - [] Add the logs to the database
+
 
 ** Report Worthy
 
