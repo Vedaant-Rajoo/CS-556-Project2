@@ -8,7 +8,6 @@ Config.set('graphics', 'minimum_height', '400')
 from kivymd.tools.hotreload.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.theming import ThemeManager
-from kivymd.color_definitions import colors
 
 
 class GruvboxTheme(ThemeManager):
@@ -16,14 +15,6 @@ class GruvboxTheme(ThemeManager):
         super().__init__(**kwargs)
         self.theme_style = 'Dark'
         self.primary_palette = 'Teal'
-        self.gruvbox_dark = (
-            colors["gruvbox-dark"][x]
-            for x in (
-            "bg0", "bg1", "bg2", "bg3", "bg4",
-            "red", "green", "yellow",
-            "blue", "purple", "aqua", "gray"
-        )
-        )
 
 
 class ScreenManager(MDScreenManager):
@@ -32,23 +23,24 @@ class ScreenManager(MDScreenManager):
 
 
 class MainApp(MDApp):
-    DEBUG = True
+    DEBUG = False
     sm = None
     state = {}
 
     def build_app(self, first=False):
-        self.theme_cls = GruvboxTheme()
         self.title = 'CS556 Project'
+        self.theme_cls = GruvboxTheme()
         if self.sm is None:
             self.state = {'current': 'login',
-                          'username': ''
+                          'username': '',
                           }
         else:
             self.state = {
                 'current': self.sm.current,
-                'username': ''
+                'username': '',
+
             }
-        KV_FILES = []
+
         self.sm = ScreenManager()
         CLASSES = self.sm.get_classes()
 

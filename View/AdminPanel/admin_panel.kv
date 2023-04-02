@@ -1,1 +1,39 @@
-<AdminPanel>
+<AdminPanel>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        MDTopAppBar:
+            id: admin_appbar
+            right_action_items: [["home",lambda x: root.gohome()],["logout", lambda x: root.logout(), "Logout"]]
+            elevation: 10
+        MDBoxLayout:
+            id: admin_box
+            orientation: 'vertical'
+            padding: "10dp"
+            spacing: "10dp"
+            pos_hint: {"center_y": 0.5}
+            MDLabel:
+                text: "Command Help: "
+                halign: "left"
+                font_style: "H4"
+                theme_text_color: "Secondary"
+            MDLabel:
+                text: "1. To grant privileges, \n type: grant <username>,<privilege> \n eg: grant user1,select,insert \n eg: grant user2,all"
+                halign: "left"
+                font_style: "H6"
+                text_color: (0,0,0,1)
+            MDTextField:
+                id: com
+                mode: "round"
+                hint_text: "Enter Command"
+                helper_text: ''
+                helper_text_mode: "persistent"
+                icon_right: "android"
+                icon_right_color: app.theme_cls.primary_color
+                size_hint_x: 1
+                size_hint_y: None
+            MDRectangleFlatButton:
+                text: "Execute"
+                pos_hint: {"center_x": 0.5}
+                on_release: root.execute()
+                
+            

@@ -81,3 +81,9 @@ def getLogs():
     cursor.execute(query)
     results = cursor.fetchall()
     return results
+
+
+def addLog(command, username):
+    query = "INSERT INTO logs (command, user) VALUES (%s, %s)"
+    cursor.execute(query, (command, username))
+    conn.commit()

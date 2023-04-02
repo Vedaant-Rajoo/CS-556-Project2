@@ -40,12 +40,13 @@ class HomeScreen(MDScreen):
         self.manager.get_screen('login').ids.username.text = ''
         self.manager.get_screen('login').ids.password.text = ''
         app.state['username'] = ''
-
         self.manager.current = 'login'
         self.manager.transition.direction = 'right'
 
     def admin(self):
-        pass
+        app.title = 'CS556 Project - Admin Panel'
+        self.manager.current = 'admin_panel'
+        self.manager.get_screen('admin_panel').ids.admin_appbar.title = f"Admin Panel - {self.username}"
 
     def goToPolicyEditor(self):
         app.title = 'CS556 Project - Policy Editor'

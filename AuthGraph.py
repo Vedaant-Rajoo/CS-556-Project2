@@ -1,5 +1,5 @@
 import random
-
+import json
 import networkx as nx
 
 
@@ -62,6 +62,25 @@ class AuthGraph(nx.DiGraph):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def load_graph(self, graph):
+        """
+        Loads a graph from a json string
+        graph: str
+        Returns: None
+        """
+        data = json.loads(graph)
+        data = nx.node_link_graph(data)
+        self.clear()
+        self.add_nodes_from(data.nodes(data=True))
+        self.add_edges_from(data.edges(data=True))
+
+    def save_graph(self):
+        """
+        Saves the graph to a json string
+        Returns: str
+        """
+        return json.dumps(nx.node_link_data(self))
 
     def add_user(self, user, role=None):
         self.add_node(user, role=role)
