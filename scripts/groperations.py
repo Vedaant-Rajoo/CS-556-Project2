@@ -30,7 +30,7 @@ def getGraph(conn, obj):
     return result[0]
 
 
-def grant(conn, user, obj, privileges=None):
+def grant_u(conn, user, obj, privileges=None):
     cursor = conn.cursor(buffered=True)
     query = "GRANT %s on cs556.%s to %s@'%'"
     cursor.execute(query, (privileges, obj, user))

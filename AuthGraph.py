@@ -60,8 +60,15 @@ class AuthGraph(nx.DiGraph):
     The AuthGraph class that inherits from networkx.DiGraph
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, policy, **attr):
+        super().__init__(**attr)
+        self.policy = policy
+        self.graph['obj'] = self.policy[0]
+        self.graph['for'] = self.policy[1]
+        self.graph['delegate'] = self.policy[2]
+        self.graph['transfer'] = self.policy[3]
+        self.graph['acceptance'] = self.policy[4]
+        self.graph['revoke'] = self.policy[5]
 
     def load_graph(self, graph):
         """
@@ -71,11 +78,16 @@ class AuthGraph(nx.DiGraph):
         """
         data = json.loads(graph)
         g_atr = data["graph"]
-        data = nx.node_link_graph(data)
-        self.clear()
-        self.add_nodes_from(data.nodes(data=True))
-        self.add_edges_from(data.edges(data=True))
-        self.graph = g_atr
+        if len(g_atr) == 0:
+            data = nx.node_link_graph(data)
+            self.add_nodes_from(data.nodes(data=True))
+            self.add_edges_from(data.edges(data=True))
+        else:
+            data = nx.node_link_graph(data)
+            self.clear()
+            self.add_nodes_from(data.nodes(data=True))
+            self.add_edges_from(data.edges(data=True))
+            self.graph = g_atr
 
     def save_graph(self):
         """
@@ -93,17 +105,22 @@ class AuthGraph(nx.DiGraph):
         self.add_node(user, role=role)
 
     def delegate(self, grantor, grantee):
-        if self.has_edge(grantor, grantee):
-            raise AuthGraphError("Already delegated")
-        if grantor not in self.nodes:
-            raise AuthGraphError("Grantor not in Database")
-        elif grantee not in self.nodes:
-            self.add_user(grantee, role='admin')
-        elif (self.nodes[grantor]['role'] not in ['owner', 'admin']) or (
-                self.nodes[grantee]['role'] == 'owner') or self.has_edge(grantee, grantor):
-            raise AuthGraphError("You are not authorized to delegate")
-        self.add_edge(grantor, grantee, weight=getNow())
-        self.nodes[grantee]['role'] = 'admin'
+        if self.graph['delegate'] is None:
+            raise AuthGraphError("Delegation not allowed")
+        elif self.graph['delegate'] == 'delegation':
+            if self.has_edge(grantor, grantee):
+                raise AuthGraphError("Already delegated")
+            if grantor not in self.nodes:
+                raise AuthGraphError("Grantor not in Database")
+            elif grantee not in self.nodes:
+                self.add_user(grantee, role='admin')
+            elif (self.nodes[grantor]['role'] not in ['owner', 'admin']) or (
+                    self.nodes[grantee]['role'] == 'owner') or self.has_edge(grantee, grantor):
+                raise AuthGraphError("You are not authorized to delegate")
+            self.add_edge(grantor, grantee, weight=getNow())
+            self.nodes[grantee]['role'] = 'admin'
+        else:
+            raise AuthGraphError("Invalid Delegation")
 
     def revoke(self, admin, user):
         if (admin or user) not in self.nodes:
@@ -114,12 +131,18 @@ class AuthGraph(nx.DiGraph):
         self.nodes[user]['role'] = None
 
     def recursive_revoke(self, admin, user):
-        # if admin is not the grantor of user, raise error
-        if not self.has_edge(admin, user):
-            raise AuthGraphError("You are not authorized to revoke this user's privileges")
-        else:
-            rec_revoke(self, admin, user)
-            self.remove_node(user)
+        if self.graph['revoke'] is None:
+            raise AuthGraphError("Revoke not allowed")
+
+        elif self.graph['revoke'] == 'revoke':
+            # if admin is not the grantor of user, raise error
+            if not self.has_edge(admin, user):
+                raise AuthGraphError("You are not authorized to revoke this user's privileges")
+            else:
+                rec_revoke(self, admin, user)
+                self.remove_node(user)
+        elif self.graph['revoke'] == 'grantor-transfer':
+            self.grant_transfer(admin, user)
 
     def grant_transfer(self, grantor, grantee):
         if not self.has_node(grantor) or self.nodes[grantor]['role'] != 'owner':

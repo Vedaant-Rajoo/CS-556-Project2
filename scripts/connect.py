@@ -93,3 +93,10 @@ def addLog(command, username):
     query = "INSERT INTO logs (command, user) VALUES (%s, %s)"
     cursor.execute(query, (command, username))
     conn.commit()
+
+
+def getJSONGraph(obj):
+    query = "SELECT graph_data FROM json_data WHERE obj = %s"
+    cursor.execute(query, (obj,))
+    result = cursor.fetchone()
+    return result

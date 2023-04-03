@@ -17,7 +17,6 @@ class LogsScreen(MDScreen):
         self.manager.get_screen('login').ids.username.text = ''
         self.manager.get_screen('login').ids.password.text = ''
         app.state['username'] = ''
-
         self.manager.current = 'login'
         self.manager.transition.direction = 'right'
 

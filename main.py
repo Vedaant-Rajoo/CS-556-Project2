@@ -23,7 +23,7 @@ class ScreenManager(MDScreenManager):
 
 
 class MainApp(MDApp):
-    DEBUG = False
+    DEBUG = True
     sm = None
     state = {}
 
@@ -33,13 +33,13 @@ class MainApp(MDApp):
         if self.sm is None:
             self.state = {'current': 'login',
                           'username': '',
-                          'obj': None
+                          'obj': ''
                           }
         else:
             self.state = {
                 'current': self.sm.current,
                 'username': '',
-                'obj': None
+                'obj': ''
             }
 
         self.sm = ScreenManager()
@@ -49,6 +49,11 @@ class MainApp(MDApp):
 
     def apply_state(self, state):
         self.sm.current = state['current']
+
+    def clear_mdlist(self):
+        mdlist = self.sm.get_screen('home').ids.home_list
+        for child in mdlist.children[:]:
+            mdlist.remove_widget(child)
 
 
 if __name__ == '__main__':
