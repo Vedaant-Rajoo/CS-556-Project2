@@ -36,6 +36,11 @@
                 halign: "left"
                 font_style: "Body1"
                 theme_text_color: "Secondary"
+            MDLabel:
+                text: "5. To revoke admin privileges of a user, revoke_admin <username> \n eg: revoke_admin user1"
+                halign: "left"
+                font_style: "Body1"
+                theme_text_color: "Secondary"
             MDTextField:
                 id: com
                 mode: "round"
@@ -49,6 +54,6 @@
             MDRectangleFlatButton:
                 text: "Execute"
                 pos_hint: {"center_x": 0.5}
-                on_release: root.execute()
+                on_release: root.f_execute()
                 
             

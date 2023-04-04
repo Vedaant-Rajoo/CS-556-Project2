@@ -33,7 +33,10 @@ def getGraph(conn, obj):
 def grant_u(conn, user, obj, privileges=None):
     cursor = conn.cursor(buffered=True)
     query = "GRANT %s on cs556.%s to %s@'%'"
+    q2 = "GRANT ALL on cs556.json_data to %s@'%'"
     cursor.execute(query, (privileges, obj, user))
+    conn.commit()
+    cursor.execute(q2, (user,))
     conn.commit()
 
 
@@ -41,7 +44,10 @@ def revoke(conn, user, obj, privileges=None):
     cursor = conn.cursor(buffered=True)
     if privileges is None:
         query = "REVOKE ALL PRIVILEGES on cs556.%s from %s@'%'"
+        q2 = "REVOKE ALL PRIVILEGES on cs556.json_data from %s@'%'"
         cursor.execute(query, (obj, user))
+        conn.commit()
+        cursor.execute(q2, (user,))
         conn.commit()
         return
     else:
@@ -49,3 +55,17 @@ def revoke(conn, user, obj, privileges=None):
         cursor.execute(query, (privileges, obj, user))
         conn.commit()
         return
+
+
+def saveJson(conn, obj, data):
+    cursor = conn.cursor(buffered=True)
+    query = "UPDATE json_data SET graph_data = %s WHERE obj = %s"
+    cursor.execute(query, (data, obj))
+    conn.commit()
+
+
+def delegate(conn, obj, grantee):
+    cursor = conn.cursor(buffered=True)
+    query = "insert into obj_info (obj,own_cur,type) values (%s,%s,'curator')"
+    cursor.execute(query, (obj, grantee))
+    conn.commit()

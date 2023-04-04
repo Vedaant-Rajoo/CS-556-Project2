@@ -23,7 +23,7 @@ class ScreenManager(MDScreenManager):
 
 
 class MainApp(MDApp):
-    DEBUG = True
+    DEBUG = False
     sm = None
     state = {}
 

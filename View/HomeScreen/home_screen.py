@@ -20,7 +20,7 @@ class HomeScreen(MDScreen):
         app.clear_mdlist()
         if isowner(self.username) or isDBA(self.username):
             for obj in getObjectsAdmined(self.username):
-                item = OneLineListItem(text=obj[0], on_release=lambda x: self.admin(obj[0]))
+                item = OneLineListItem(text=obj[0], on_release=lambda _, o=obj: self.admin(o[0]))
                 self.ids.home_list.add_widget(item)
 
     def on_enter(self, *args):
@@ -29,9 +29,8 @@ class HomeScreen(MDScreen):
         app.state['obj'] = ''
         app.clear_mdlist()
         self.ids.home_appbar.title = f"{self.username}"
-        obj_owned = getObjectsAdmined(self.username)
-        for obj in obj_owned:
-            item = OneLineListItem(text=obj[0], on_release=lambda x: self.admin(obj[0]))
+        for obj in getObjectsAdmined(self.username):
+            item = OneLineListItem(text=obj[0], on_release=lambda _, o=obj: self.admin(o[0]))
             self.ids.home_list.add_widget(item)
         if isowner(self.username) and isDBA(self.username) and len(self.ids.home_appbar.right_action_items) <= 1:
             self.ids.home_appbar.right_action_items.insert(0, ['shield-check', lambda x: self.goToPolicyEditor(),

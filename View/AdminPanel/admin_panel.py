@@ -1,9 +1,9 @@
 from kivymd.app import MDApp
 from kivymd.uix.screen import MDScreen
 
-from AuthGraph import AuthGraph
+from AuthGraph import AuthGraph, AuthGraphError
 from apputils import load_kv
-from scripts.connect import addLog, getPolicies, getJSONGraph
+from scripts.connect import addLog, getPolicies, getJSONGraph, isOwner
 from scripts.groperations import *
 
 load_kv(__name__)
@@ -29,9 +29,16 @@ class AdminPanel(MDScreen):
         data = getJSONGraph(self.obj)
         if data:
             self.ag.load_graph(data[0])
-            print(self.ag.graph['for'])
+            if not self.ag.has_node(app.state['username']):
+                if isOwner(app.state['username'], self.obj):
+                    self.ag.add_user(app.state['username'], 'owner')
+                else:
+                    self.ag.add_user(app.state['username'], 'curator')
 
     def logout(self):
+        app.title = 'CS556 Project - Login'
+        json_data = self.ag.save_graph()
+        saveJson(self.conn, self.obj, json_data)
         self.manager.get_screen('login').ids.username.text = ''
         self.manager.get_screen('login').ids.password.text = ''
         app.state['username'] = ''
@@ -43,6 +50,13 @@ class AdminPanel(MDScreen):
         app.title = 'CS556 Project - Home'
         self.manager.current = 'home'
         self.manager.transition.direction = 'right'
+
+    def f_execute(self):
+        try:
+            self.execute()
+        except AuthGraphError as e:
+            self.ids.com.helper_text = str(e)
+            self.ids.com.text = ''
 
     def execute(self):
         command = self.ids.com.text
@@ -66,6 +80,7 @@ class AdminPanel(MDScreen):
                 addLog(command, app.state['username'])
                 self.ids.com.helper_text = 'Privileges revoked'
                 self.ids.com.text = ''
+                self.revoke(app.state['username'], user, privileges_str)
             else:
                 self.ids.com.helper_text = 'Invalid Privilege'
                 self.ids.com.text = ''
@@ -80,6 +95,14 @@ class AdminPanel(MDScreen):
             addLog(command, app.state['username'])
             self.ids.com.helper_text = 'Transfer successful'
             self.ids.com.text = ''
+            self.transfer(app.state['username'], user)
+
+        elif words[0] == 'revoke_admin':
+            user = words[1]
+            addLog(command, app.state['username'])
+            self.ids.com.helper_text = 'Admin privileges revoked'
+            self.ids.com.text = ''
+            self.revoke_admin(app.state['username'], user)
 
         else:
             self.ids.com.helper_text = 'Invalid Command'
@@ -98,3 +121,14 @@ class AdminPanel(MDScreen):
 
     def delegate(self, grantor, grantee):
         self.ag.delegate(grantor, grantee)
+        delegate(self.conn, self.obj, grantee)
+
+    def transfer(self, grantor, grantee):
+        self.ag.transfer(grantor, grantee)
+
+    def revoke(self, grantor, grantee, privileges):
+        if self.ag.has_edge(grantor, grantee):
+            revoke(self.conn, grantor, grantee, privileges)
+
+    def revoke_admin(self, grantor, grantee):
+        pass

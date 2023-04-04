@@ -102,7 +102,10 @@ class AuthGraph(nx.DiGraph):
             raise AuthGraphError("Cant load attrributes")
 
     def add_user(self, user, role=None):
-        self.add_node(user, role=role)
+        if user in self.nodes:
+            raise AuthGraphError("User already in Database")
+        else:
+            self.add_node(user, role=role)
 
     def delegate(self, grantor, grantee):
         if self.graph['delegate'] is None:
@@ -131,20 +134,14 @@ class AuthGraph(nx.DiGraph):
         self.nodes[user]['role'] = None
 
     def recursive_revoke(self, admin, user):
-        if self.graph['revoke'] is None:
-            raise AuthGraphError("Revoke not allowed")
+        # if admin is not the grantor of user, raise error
+        if not self.has_edge(admin, user):
+            raise AuthGraphError("You are not authorized to revoke this user's privileges")
+        else:
+            rec_revoke(self, admin, user)
+            self.remove_node(user)
 
-        elif self.graph['revoke'] == 'revoke':
-            # if admin is not the grantor of user, raise error
-            if not self.has_edge(admin, user):
-                raise AuthGraphError("You are not authorized to revoke this user's privileges")
-            else:
-                rec_revoke(self, admin, user)
-                self.remove_node(user)
-        elif self.graph['revoke'] == 'grantor-transfer':
-            self.grant_transfer(admin, user)
-
-    def grant_transfer(self, grantor, grantee):
+    def grantor_transfer(self, grantor, grantee):
         if not self.has_node(grantor) or self.nodes[grantor]['role'] != 'owner':
             raise AuthGraphError("Either Grantor not in Database or Grantor is not an owner")
         elif not list(self.successors(grantor)):
@@ -175,3 +172,14 @@ class AuthGraph(nx.DiGraph):
             self.remove_edges_from(incoming_edges)
         self.remove_node(grantor)
         self.add_node(grantor, role='shadow')
+
+    def transfer(self, grantor, grantee):
+        if self.graph['transfer'] is None or self.graph['transfer'] == 'no-transfer' or self.graph['transfer'] == 'nil':
+            raise AuthGraphError("Transfer not allowed")
+        else:
+            if self.graph['revoke'] == 'grantor-transfer':
+                self.grantor_transfer(grantor, grantee)
+            elif self.graph['revoke'] == 'revoke':
+                self.recursive_revoke(grantor, grantee)
+            else:
+                raise AuthGraphError("Invalid Transfer")

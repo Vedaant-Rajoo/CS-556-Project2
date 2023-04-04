@@ -69,6 +69,22 @@ def isowner(username):
         return False
 
 
+def isOwner(username, obj):
+    """
+    Checks if the user is the owner of the object
+    :param username:
+    :param obj:
+    :return:
+    """
+    query = "SELECT * FROM obj_info WHERE own_cur = %s AND obj = %s AND type = %s"
+    cursor.execute(query, (username, obj, 'owner'))
+    results = cursor.fetchone()
+    if results:
+        return True
+    else:
+        return False
+
+
 def getObjects():
     query = "SELECT obj FROM obj_info"
     cursor.execute(query)
