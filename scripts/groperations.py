@@ -2,6 +2,8 @@ from datetime import datetime
 
 import mysql.connector
 
+from scripts.connect import addToobjinfo
+
 HOST = 'db-mysql-nyc1-25733-do-user-12162670-0.b.db.ondigitalocean.com'
 DATABASE = 'cs556'
 PORT = 25060
@@ -30,28 +32,22 @@ def getGraph(conn, obj):
     return result[0]
 
 
-def grant_u(conn, user, obj, privileges=None):
+def grant_u(conn, user, bi, obj, privileges=None):
     cursor = conn.cursor(buffered=True)
-    query = "GRANT %s on cs556.%s to %s@'%'"
-    q2 = "GRANT ALL on cs556.json_data to %s@'%'"
+    query = "GRANT %s ON cs556.%s TO %s@'%' WITH GRANT OPTION"
     cursor.execute(query, (privileges, obj, user))
-    conn.commit()
-    cursor.execute(q2, (user,))
     conn.commit()
 
 
 def revoke(conn, user, obj, privileges=None):
     cursor = conn.cursor(buffered=True)
     if privileges is None:
-        query = "REVOKE ALL PRIVILEGES on cs556.%s from %s@'%'"
-        q2 = "REVOKE ALL PRIVILEGES on cs556.json_data from %s@'%'"
+        query = "REVOKE ALL PRIVILEGES ON cs556.%s FROM %s@'%'"
         cursor.execute(query, (obj, user))
-        conn.commit()
-        cursor.execute(q2, (user,))
         conn.commit()
         return
     else:
-        query = "REVOKE %s on cs556.%s from %s@'%'"
+        query = "REVOKE %s ON cs556.%s FROM %s@'%'"
         cursor.execute(query, (privileges, obj, user))
         conn.commit()
         return
@@ -64,8 +60,21 @@ def saveJson(conn, obj, data):
     conn.commit()
 
 
-def delegate(conn, obj, grantee):
+def delegate(conn, obj, grantee, grantor):
     cursor = conn.cursor(buffered=True)
-    query = "insert into obj_info (obj,own_cur,type) values (%s,%s,'curator')"
-    cursor.execute(query, (obj, grantee))
+    addToobjinfo(obj, grantee, grantor, 'curator')
+    # delegate admin privileges by giving them grant option
+    q2 = "GRANT GRANT OPTION on cs556.%s to %s@'%%'" % (obj, grantee)
+    cursor.execute(q2)
+    q3 = "grant index on cs556.%s to %s@'%%'" % (obj, grantee)
+    cursor.execute(q3)
+    conn.commit()
+
+
+def revoke_admin(conn, obj, grantee):
+    cursor = conn.cursor(buffered=True)
+    q1 = "REVOKE GRANT OPTION on cs556.%s from %s@'%%'" % (obj, grantee)
+    cursor.execute(q1)
+    q2 = "REVOKE index on cs556.%s from %s@'%%'" % (obj, grantee)
+    cursor.execute(q2)
     conn.commit()

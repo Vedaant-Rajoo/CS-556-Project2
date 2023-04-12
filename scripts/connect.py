@@ -85,6 +85,22 @@ def isOwner(username, obj):
         return False
 
 
+def isCurator(username, obj):
+    """
+    Checks if the user is the curator of the object
+    :param username:
+    :param obj:
+    :return:
+    """
+    query = "SELECT * FROM obj_info WHERE own_cur = %s AND obj = %s AND type = %s"
+    cursor.execute(query, (username, obj, 'curator'))
+    results = cursor.fetchone()
+    if results:
+        return True
+    else:
+        return False
+
+
 def getObjects():
     query = "SELECT obj FROM obj_info"
     cursor.execute(query)
@@ -116,3 +132,32 @@ def getJSONGraph(obj):
     cursor.execute(query, (obj,))
     result = cursor.fetchone()
     return result
+
+
+def addToobjinfo(obj, username, grantor, type):
+    query = "INSERT INTO obj_info (obj, own_cur, bi, type) VALUES (%s, %s, %s, %s)"
+    cursor.execute(query, (obj, username, grantor, type))
+    conn.commit()
+
+
+def removeFromobjinfo(obj, username, bi):
+    query = "DELETE FROM obj_info WHERE obj = %s AND own_cur = %s AND bi = %s"
+    cursor.execute(query, (obj, username, bi))
+    conn.commit()
+
+
+def allAccessToJson(username):
+    query = "GRANT ALL PRIVILEGES ON cs556.json_data TO %s@'%'"
+    cursor.execute(query, (username,))
+    conn.commit()
+
+
+def revoke_ad(username, obj):
+    q2 = "REVOKE GRANT OPTION on cs556.%s from %s@'%%'" % (obj, username)
+    cursor.execute(q2)
+    conn.commit()
+    if isCurator(username, obj):
+        query = "REVOKE ALL PRIVILEGES ON cs556.json_data FROM %s@'%'"
+        cursor.execute(query, (username,))
+        conn.commit()
+        q3 = "REVOKE GRANT OPTION on cs556.%s from %s@'%%'" % (obj, username)

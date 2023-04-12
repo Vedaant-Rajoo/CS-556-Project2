@@ -3,7 +3,7 @@ from kivymd.uix.screen import MDScreen
 
 from AuthGraph import AuthGraph, AuthGraphError
 from apputils import load_kv
-from scripts.connect import addLog, getPolicies, getJSONGraph, isOwner
+from scripts.connect import addLog, getPolicies, getJSONGraph, isOwner, allAccessToJson
 from scripts.groperations import *
 
 load_kv(__name__)
@@ -38,6 +38,7 @@ class AdminPanel(MDScreen):
     def logout(self):
         app.title = 'CS556 Project - Login'
         json_data = self.ag.save_graph()
+        allAccessToJson(app.state['username'])
         saveJson(self.conn, self.obj, json_data)
         self.manager.get_screen('login').ids.username.text = ''
         self.manager.get_screen('login').ids.password.text = ''
@@ -54,7 +55,7 @@ class AdminPanel(MDScreen):
     def f_execute(self):
         try:
             self.execute()
-        except AuthGraphError as e:
+        except Exception as e:
             self.ids.com.helper_text = str(e)
             self.ids.com.text = ''
 
@@ -117,11 +118,11 @@ class AdminPanel(MDScreen):
 
     def grant(self, grantor, grantee, privileges):
         if self.ag.has_edge(grantor, grantee):
-            grant_u(self.conn, grantor, grantee, privileges)
+            grant_u(self.conn, grantor, grantee, self.obj, privileges)
 
     def delegate(self, grantor, grantee):
         self.ag.delegate(grantor, grantee)
-        delegate(self.conn, self.obj, grantee)
+        delegate(self.conn, self.obj, grantee, grantor)
 
     def transfer(self, grantor, grantee):
         self.ag.transfer(grantor, grantee)

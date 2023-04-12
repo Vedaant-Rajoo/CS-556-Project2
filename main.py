@@ -1,3 +1,6 @@
+import os
+import sys
+
 from kivy.config import Config
 
 Config.set('graphics', 'width', '800')
@@ -8,6 +11,7 @@ Config.set('graphics', 'minimum_height', '400')
 from kivymd.tools.hotreload.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.theming import ThemeManager
+from kivy.resources import resource_add_path
 
 
 class GruvboxTheme(ThemeManager):
@@ -57,5 +61,9 @@ class MainApp(MDApp):
 
 
 if __name__ == '__main__':
-    app = MainApp()
-    app.run()
+    try:
+        app = MainApp()
+        app.run()
+    except Exception as e:
+        print(e)
+        input('Press any key to exit...')
