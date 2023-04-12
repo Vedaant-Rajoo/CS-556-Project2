@@ -31,10 +31,10 @@ pip install -r requirments.txt
    - [X] Add DBA users to admin privilege.
    - [X] Backend Development
    - [X] Figure out the realtional connections.
-   - [] Add AuthLogin graph class to main app
+   - [X] Add AuthLogin graph class to main app
    - [] Package App
    - [X] Logs Screen
-   - [] Add the logs to the database
+   - [X] Add the logs to the database
 
 
 ** Report Worthy
